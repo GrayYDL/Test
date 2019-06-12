@@ -45,6 +45,6 @@ public class PaginationHelperTest {
          Assert.assertEquals(1, helper.pageIndex(5));
          Assert.assertEquals(-1, helper.pageIndex(20));
          Assert.assertEquals(-1, helper.pageIndex(-10));
-    }
+    }+
 
 }
