@@ -5,37 +5,33 @@ import java.util.List;
 // TODO: 完成这个类
 
 public class PaginationHelper<I> {
-	private List<I> collection;
-    private int itemPerPage;
-    private int itemNum;
-    private int pagesNum;
 
-    /**
+    private List<I> collection;
+	private int itemsPerPage;
+
+	/**
      * 构造函数包含
-     * 1）数组collection，表示需要分页的所有元素
-     * 2）数字itemsPerPage，表示每页的元素个数
+     * 1)数组collection，表示需要分页的所有元素
+     * 2)数字itemsPerPage，表示每页的元素个数
      */
     public PaginationHelper(List<I> collection, int itemsPerPage) {
-    	 this.collection = collection;
-         this.itemPerPage = itemsPerPage;
-         this.itemNum = collection.size();
-         this.pagesNum = (int) Math.ceil((float) collection.size() / (float) itemPerPage);
+    	this.collection = collection;
+    	this.itemsPerPage = itemsPerPage;
     }
 
     /**
      * 返回collection中所有元素的个数
      */
     public int itemCount() {
-        
-        return itemNum;
+        return collection.size();
     }
 
     /**
      * 返回页数
      */
     public int pageCount() {
-        
-        return pagesNum;
+    	if(itemCount() % itemsPerPage != 0)return itemCount() / itemsPerPage + 1;
+    	return itemCount() / itemsPerPage;
     }
 
     /**
@@ -44,10 +40,9 @@ public class PaginationHelper<I> {
      * 如果pageIndex为非法值则返回-1
      */
     public int pageItemCount(int pageIndex) {
-       
-        if (pageIndex >= pagesNum || pageIndex < 0) return -1;
-        else if ((pageIndex + 1) * itemPerPage <= itemNum) return itemPerPage;
-        else return itemNum % ((pageIndex) * itemPerPage);
+    	if(pageIndex < 0 || pageIndex >= pageCount())return -1;
+        if(pageIndex < pageCount()-1)return itemsPerPage;
+        return (itemCount() % itemsPerPage == 0) ? itemsPerPage : itemCount() % itemsPerPage;
     }
 
     /**
@@ -56,8 +51,7 @@ public class PaginationHelper<I> {
      * 如果itemIndex为非法值则返回-1
      */
     public int pageIndex(int itemIndex) {
-       
-        if (itemIndex >= itemNum || itemIndex < 0) return -1;
-        else return itemIndex / itemPerPage;
+        if(itemIndex < 0 || itemIndex > itemCount())return -1;
+        return (itemIndex % itemsPerPage == 0) ? itemIndex / itemsPerPage - 1 : itemIndex / itemsPerPage;
     }
 }
