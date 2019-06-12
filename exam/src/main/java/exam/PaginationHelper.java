@@ -5,6 +5,10 @@ import java.util.List;
 // TODO: 完成这个类
 
 public class PaginationHelper<I> {
+	private List<I> collection;
+    private int itemPerPage;
+    private int itemNum;
+    private int pagesNum;
 
     /**
      * 构造函数包含
@@ -12,20 +16,26 @@ public class PaginationHelper<I> {
      * 2）数字itemsPerPage，表示每页的元素个数
      */
     public PaginationHelper(List<I> collection, int itemsPerPage) {
+    	 this.collection = collection;
+         this.itemPerPage = itemsPerPage;
+         this.itemNum = collection.size();
+         this.pagesNum = (int) Math.ceil((float) collection.size() / (float) itemPerPage);
     }
 
     /**
      * 返回collection中所有元素的个数
      */
     public int itemCount() {
-        throw new RuntimeException();
+        
+        return itemNum;
     }
 
     /**
      * 返回页数
      */
     public int pageCount() {
-        throw new RuntimeException();
+        
+        return pagesNum;
     }
 
     /**
@@ -34,7 +44,10 @@ public class PaginationHelper<I> {
      * 如果pageIndex为非法值则返回-1
      */
     public int pageItemCount(int pageIndex) {
-        throw new RuntimeException();
+       
+        if (pageIndex >= pagesNum || pageIndex < 0) return -1;
+        else if ((pageIndex + 1) * itemPerPage <= itemNum) return itemPerPage;
+        else return itemNum % ((pageIndex) * itemPerPage);
     }
 
     /**
@@ -43,6 +56,8 @@ public class PaginationHelper<I> {
      * 如果itemIndex为非法值则返回-1
      */
     public int pageIndex(int itemIndex) {
-        throw new RuntimeException();
+       
+        if (itemIndex >= itemNum || itemIndex < 0) return -1;
+        else return itemIndex / itemPerPage;
     }
 }
